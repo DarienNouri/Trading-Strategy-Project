@@ -1,4 +1,4 @@
-# inital implementation of the project
+# Initial implementation of the project
 
 
 ----
