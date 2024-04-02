@@ -22,38 +22,41 @@ from rich import print
 
 
 class DataUtils:
+    example_usage = """
+        A class which provides functionalities to fetch and clean stock price data.
+
+        Example Usage:
+        -------------
+
+        ## Creating an Instance
+        data_downloader = DataUtils(verbose=True)
+        `verbose` argument can be set to `True` to print detailed output during download process.
+        It defaults to `False`.
+
+        ## Getting Data for Single Ticker (Default Price Type)
+        data = data_downloader.get_data('AAPL', datetime.datetime(2020, 1, 1), datetime.datetime(2020, 12, 31))
+        The above call downloads 'Close' price data for 'AAPL' stock for the year 2020.
+
+        ## Getting Data for Multiple Tickers (Default Price Type)
+        data = data_downloader.get_data(['AAPL', 'GOOG'], datetime.datetime(2020,1,1), datetime.datetime(2020,12,31))
+        The above call downloads 'Close' price data for 'AAPL' and 'GOOG' stocks for the year 2020.
+
+        ## Getting Data for Single Ticker (Specific Price Type)
+        data = data_downloader.get_data('AAPL', datetime.datetime(2020,1,1), datetime.datetime(2020,12,31), price_type='Open')
+        This call downloads 'Open' price data for 'AAPL' stock for the year 2020.
+
+        ## Getting Data for Multiple Tickers (Multiple Price Types)
+        data = data_downloader.get_data(['AAPL', 'GOOG'], datetime.datetime(2020,1,1), datetime.datetime(2020,12,31), price_type=['Open', 'Close'])
+        The above call downloads 'Open' and 'Close' price data for 'AAPL' and 'GOOG' stocks for the year 2020.
     """
-    A class which provides functionalities to fetch and clean stock price data.
 
-    Example Usage:
-    -------------
-
-      ## Creating an Instance
-      data_downloader = DataUtils(verbose=True)
-      `verbose` argument can be set to `True` to print detailed output during download process.
-      It defaults to `False`.
-
-      ## Getting Data for Single Ticker (Default Price Type)
-      data = data_downloader.get_data('AAPL', datetime.datetime(2020, 1, 1), datetime.datetime(2020, 12, 31))
-      The above call downloads 'Close' price data for 'AAPL' stock for the year 2020.
-
-      ## Getting Data for Multiple Tickers (Default Price Type)
-      data = data_downloader.get_data(['AAPL', 'GOOG'], datetime.datetime(2020,1,1), datetime.datetime(2020,12,31))
-      The above call downloads 'Close' price data for 'AAPL' and 'GOOG' stocks for the year 2020.
-
-      ## Getting Data for Single Ticker (Specific Price Type)
-      data = data_downloader.get_data('AAPL', datetime.datetime(2020,1,1), datetime.datetime(2020,12,31), price_type='Open')
-      This call downloads 'Open' price data for 'AAPL' stock for the year 2020.
-
-      ## Getting Data for Multiple Tickers (Multiple Price Types)
-      data = data_downloader.get_data(['AAPL', 'GOOG'], datetime.datetime(2020,1,1), datetime.datetime(2020,12,31), price_type=['Open', 'Close'])
-      The above call downloads 'Open' and 'Close' price data for 'AAPL' and 'GOOG' stocks for the year 2020.
-    """
-
-    def __init__(self, verbose: bool = False):
+    def __init__(self, verbose: bool = True):
         """Constructs the necessary attributes for the DataDownloader object. Takes a boolean argument `verbose`"""
 
         self.verbose = verbose
+
+        if self.verbose:
+            print(DataUtils.example_usage)
 
     def validate_price_type(self, price_type: Union[str, List[str]]) -> Union[str, List[str]]:
         """Validates the input price type(s), checks if it/they is/are one of ["Open", "High", "Low", "Close", "Adj Close"]"""

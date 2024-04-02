@@ -36,9 +36,6 @@ Functions:
     rolling_ols_zscore_nb
 """
 
-# path of current file
-# plt.style.use(os.path.join(os.path.dirname(os.path.abspath(__file__)), "qb_dark.mplstyle"))
-plt.style.use(os.path.join(os.getcwd(), ".templates", "qb_dark.mplstyle"))
 
 def calculate_zscore(series: pd.Series) -> pd.Series:
     """Calculates the Z-score of a given series. Takes a pandas Series and returns a Series of Z-scores."""
@@ -177,6 +174,21 @@ def identify_cointegrated_pairs(df: pd.DataFrame, alpha: float = 1.0) -> tuple:
 
     return score_matrix, p_value_matrix, significant_pairs
 
+def _sort_pairs(dataframe, ascending=True):
+    """
+    Function to sort pairs in a dataframe.
+    """
+    # Set the diagonal to NaN
+    np.fill_diagonal(dataframe.values, np.nan)
+
+    # Create a mask for the upper triangle
+    upper_triangle_mask = np.triu(np.ones_like(dataframe, dtype=bool))
+
+    # Unstack and sort the pairs
+    unstacked_pairs = dataframe.where(upper_triangle_mask).unstack()
+    sorted_pairs = unstacked_pairs.sort_values(ascending=ascending)
+
+    return sorted_pairs
 
 def calculate_bollinger_bands(
     df: pd.Series, window: int = 20, num_of_std: int = 2

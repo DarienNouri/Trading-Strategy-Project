@@ -1,6 +1,46 @@
 # Initial implementation of the project
 
+***See [file](https://github.com/DarienNouri/Trading-Strategy-Prjoect/blob/77504032eafc3947fea0f0414bb1bed2926ee10d/resources/Notes.md) for notes and links to articles/code resources**
 
+### Quick Notes
+- dev/Notebooks/* contains some scratch notebooks that includes the ticker selection set.
+- data/news_scraping contains the code for scraping the news data from lexis nyu database with some results in data/results. I will work on obtaining the results for the remaining tickers over the upcoming days. Currently rate limitted.
+
+
+```python
+selected_stock_basket = [
+    'GE',
+    'HON',
+    'DE',
+    'UNP',
+    'FDX',
+    'JPM',
+    'BAC',
+    'WFC',
+    'C',
+    'GS',
+    'MS',
+    'AXP',
+    'BLK',
+    'AAPL',
+    'GOOGL',
+    'INTC',
+    'CRM'
+ ]
+```
+
+
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+### Overview of Utils Module
 ----
 I created a utils module that packages functions and classes for the project.
 

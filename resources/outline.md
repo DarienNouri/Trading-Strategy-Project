@@ -23,5 +23,24 @@ Examile ground truth data and technical indicators including [(link to code:)](h
 6.
 ## Data Analysis
 
+selected stock basket
+['GE',
+ 'HON',
+ 'DE',
+ 'UNP',
+ 'FDX',
+ 'JPM',
+ 'BAC',
+ 'WFC',
+ 'C',
+ 'GS',
+ 'MS',
+ 'AXP',
+ 'BLK',
+ 'AAPL',
+ 'GOOGL',
+ 'INTC',
+ 'CRM']
+
 ## Model Development
 

@@ -10,6 +10,7 @@ This markdown page serves as a reference for a project focused on evaluating Con
 
 - **Cointegration and Pairs Trading**: A detailed guide on identifying cointegrated stock pairs using statistical tests, estimating error-correction models, and backtesting pairs trading strategies in Python. It offers a comprehensive exploration of pairs trading mechanics, including the use of statistical tests for cointegration and the practical application of these concepts through Python code examples. [Blog Post](https://letianzj.github.io/cointegration-pairs-trading.html)
 
+- **Sparse mean reversion**: Detailed guide on identifying and weighting basket of stocks for sparse mean reversion strategy. [Blog Post](https://hudsonthames.org/sparse-mean-reverting-portfolio-selection/)
 
 ## Examples
 
@@ -24,6 +25,8 @@ This markdown page serves as a reference for a project focused on evaluating Con
 ## Publications
 
 - **Deep Learning for Trading Strategy**: This paper introduces a trading strategy that employs deep learning for changepoint detection, aiming to combine slow momentum with fast reversion for enhanced trading performance. [arXiv](https://arxiv.org/pdf/2105.13727v3.pdf) | [ResearchGate](https://www.researchgate.net/publication/356936311_Slow_Momentum_with_Fast_Reversion_A_Trading_Strategy_Using_Deep_Learning_and_Changepoint_Detection)
+- **Sparse Mean Reversion Strategy using LSTM and VAR**: [link](https://intapi.sciendo.com/pdf/10.2478/ausi-2021-0013)
+
 
 ## Tools and Libraries
 
