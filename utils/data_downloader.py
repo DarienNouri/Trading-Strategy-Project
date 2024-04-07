@@ -18,8 +18,7 @@ import yfinance as yf
 import datetime
 from typing import List, Optional, Union
 import pandas as pd
-from rich import print
-
+from rich import print as rprint
 
 class DataUtils:
     example_usage = """
@@ -50,36 +49,45 @@ class DataUtils:
         The above call downloads 'Open' and 'Close' price data for 'AAPL' and 'GOOG' stocks for the year 2020.
     """
 
-    def __init__(self, verbose: bool = True):
+    def __init__(self, verbose: bool = False):
         """Constructs the necessary attributes for the DataDownloader object. Takes a boolean argument `verbose`"""
 
         self.verbose = verbose
 
         if self.verbose:
-            print(DataUtils.example_usage)
+            rprint(DataUtils.example_usage)
 
-    def validate_price_type(self, price_type: Union[str, List[str]]) -> Union[str, List[str]]:
+    def validate_price_type(
+        self, price_type: Union[str, List[str]]
+    ) -> Union[str, List[str]]:
         """Validates the input price type(s), checks if it/they is/are one of ["Open", "High", "Low", "Close", "Adj Close"]"""
 
-        valid_price_types = ["Open", "High", "Low", "Close", "Adj Close"]
+        valid_price_types = ["Open", "High", "Low", "Close", "Adj Close", "Volume"]
 
         if isinstance(price_type, str):
+            if price_type == "All":
+                return valid_price_types
             if price_type not in valid_price_types:
-                print(f"Invalid price type: {price_type}. Defaulting to 'Close'")
-                return ['Close']
+                rprint(f"Invalid price type: {price_type}. Defaulting to 'Close'")
+                return ["Close"]
             return [price_type]
         elif isinstance(price_type, list):
             invalid_types = set(price_type) - set(valid_price_types)
             if invalid_types:
-                print(f"Invalid price types: {invalid_types}. Ignoring these.")
+                rprint(f"Invalid price types: {invalid_types}. Ignoring these.")
                 return list(set(price_type) - set(invalid_types))
             return price_type
 
-
-    def get_data(self, tickers: Union[str, List[str]], start_date: datetime.datetime,
-                    end_date: datetime.datetime, price_type: Union[str, List[str]] = 'Close',
-                    *args, **kwargs
-                    ) -> Union[pd.DataFrame, pd.Series]:
+    def get_data(
+        self,
+        tickers: Union[str, List[str]],
+        start_date: datetime.datetime = datetime.datetime(2021, 1, 1),
+        end_date: datetime.datetime = datetime.datetime(2024, 3, 31),
+        price_type: Union[str, List[str]] = "Close",
+        *args,
+        **kwargs,
+    ) -> Union[pd.DataFrame, pd.Series]:
+        pass
         """
 
         Method that takes either a string or list of tickers, start and end dates as required params,
@@ -98,12 +106,19 @@ class DataUtils:
         pd.DataFrame/ pd.Series (if tickers is a single str)
         """
         price_type = self.validate_price_type(price_type)
-        print(f"Pulled {price_type} for {tickers} from {start_date} to {end_date}")
+        rprint(f"Pulled {price_type} for {tickers} from {start_date} to {end_date}")
         try:
-            data = yf.download(tickers, start=start_date, end=end_date, progress=self.verbose, *args, **kwargs)
+            data = yf.download(
+                tickers,
+                start=start_date,
+                end=end_date,
+                progress=self.verbose,
+                *args,
+                **kwargs,
+            )
 
             if data.empty:
-                print(f"No data for {tickers}")
+                rprint(f"No data for {tickers}")
                 return pd.DataFrame()
 
             price_data = data[price_type]
@@ -111,11 +126,9 @@ class DataUtils:
             # Check if tickers is a string, (i.e., single ticker provided), then return Series.
             if isinstance(tickers, str) and len(price_type) == 1:
                 # set second level column name as the ticker
-                # price_data.columns = pd.MultiIndex.from_product([price_data.columns, [tickers]])
                 price_data = price_data.squeeze()
                 price_data.name = tickers
                 return price_data
-
 
             if len(price_type) == 1:
                 price_data.columns = price_data.columns.droplevel(0)
@@ -123,5 +136,5 @@ class DataUtils:
             return price_data
 
         except Exception as e:
-            print(f"Error downloading data for {tickers}: {e}")
+            rprint(f"Error downloading data for {tickers}: {e}")
             return pd.DataFrame()
