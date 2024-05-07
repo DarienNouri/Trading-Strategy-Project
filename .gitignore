@@ -2,4 +2,6 @@ utils/__pycache__
 .DS_Store
 /*
 
+!.gitignore
+
 !strategies/backtesting/scratch/backtest_dev_03.ipynb
