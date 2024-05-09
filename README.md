@@ -10,15 +10,33 @@ Yihao Zhong: yz7654@nyu.edu
 ### Structure
 ```tree
 
-├── datasets/ 
-├── utils/
-|   ├── 
-├── webapp/ 
-|   ├── 
-├── train.py 
-├── eval.py 
-├── predict.py 
-├── inference_time.py 
+├── data/ 
+|   ├── model_results/
+|   ├── news_data/
+|   ├── price_data/
+|   ├── sentiment_data/
+|   ├── techinical_indicators_data/
+|   ├── graphs/
+├── miscellaneous/
+├── models/ 
+|   ├── lstm
+|   ├── transformer
+|   ├── grid_search
+|   ├── utils_usage
+|   ├── setup
+├── references
+├── sentiments
+|   ├── news_scraping
+|   ├── sentiment_analysis
+├── strategies
+|   ├── backtesting/
+|   ├── data/
+|   ├── notebooks
+|   ├──── spread_forecasting
+├── utils
+|   ├── analyser
+|   ├── data_downloader
+|   ├── stock_visualizer
 ```
 
 ### Data 
