@@ -54,7 +54,7 @@ We trained and evaluated various parametric and non-parametric models on the der
 
 Hyperparameter tuning was done using HyperBand with a maximum budget of 100 epochs and a maximum budget of 10 epochs per configuration. Below is a fairly dope visualization of the HyperBand tuning process I pulled from the TensorBoard logs.
 
-![HyperBand Visualization of Hyperparameter Tuning](figures/image.png)
+![HyperBand Visualization of Hyperparameter Tuning](figures/image-band.png)
 
 
 Below are the architectures of the LSTM and BiLSTM models used in the project. The Vanilla LSTM model consists of two LSTM layers with 64 units each. The LSTM and Bi-LISTM model parameters were tuned using HyperBand with a maximum budget of 100 epochs and a maximum budget of 10 epochs per configuration. 
@@ -83,7 +83,9 @@ Overall we can see a clear trend with performance as a function of model complex
 
 The simpler models, while still profitable, had lower returns and higher drawdowns, indicating that they may not be as effective in capturing the complex relationships between the pairs. 
 
-Since the models are tested during a bull run, with the S&P seeing over 30% gains, large returns are not impressive with benchmarks in place. With respect to the S&P over this time period, three of the five trained models were able to outperform the market. 
+Since the models are tested during a bull run, with the S&P seeing over 30% gains, large returns are not impressive with benchmarks in place. With respect to the S&P over this time period, three of the five trained models were able to outperform the market.
+
+All backtests were performed with a starting capital of $$100,000$ and a leverage of 1. The table below summarizes the backtesting results of the various models.
 
 
 
