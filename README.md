@@ -1,48 +1,28 @@
-# Initial implementation of the project
+# ML Model Complexity and U.S. Securities Strategy
 
-***See [file](https://github.com/DarienNouri/Trading-Strategy-Prjoect/blob/77504032eafc3947fea0f0414bb1bed2926ee10d/resources/Notes.md) for notes and links to articles/code resources**
-
-### Quick Notes
-- dev/Notebooks/* contains some scratch notebooks that includes the ticker selection set.
-- data/news_scraping contains the code for scraping the news data from lexis nyu database with some results in data/results. I will work on obtaining the results for the remaining tickers over the upcoming days. Currently rate limitted.
+Charles Wang: mw4899@nyu.edu
+Darien Nouri: dan9232@nyu.edu
+Yihao Zhong: yz7654@nyu.edu
 
 
-```python
-selected_stock_basket = [
-    'GE',
-    'HON',
-    'DE',
-    'UNP',
-    'FDX',
-    'JPM',
-    'BAC',
-    'WFC',
-    'C',
-    'GS',
-    'MS',
-    'AXP',
-    'BLK',
-    'AAPL',
-    'GOOGL',
-    'INTC',
-    'CRM'
- ]
+### Introduction
+
+### Structure
+```tree
+
+├── datasets/ 
+├── utils/
+|   ├── 
+├── webapp/ 
+|   ├── 
+├── train.py 
+├── eval.py 
+├── predict.py 
+├── inference_time.py 
 ```
 
-
-
-
-
-
-
-<br/>
-<br/>
-
-
-
-### Overview of Utils Module
-----
-I created a utils module that packages functions and classes for the project.
+### Data 
+We created a utils module that packages functions and classes for the project.
 
 See the [utils_usage_examples.ipynb](https://github.com/DarienNouri/Trading-Strategy-Prjoect/blob/c6327f94ccef0929b11cef79f4a6d02e51100c98/examples/utils_usage_examples.ipynb) notebook for usage examples.
 
@@ -57,12 +37,6 @@ has some functions for visualizing statistical tests related to time series and 
 - analyser.py
 Bulk of the utils. Inlcudes many functions for time series and financial data analysis. Raning from preprocessing to signal generation.
 
-Note: I also included some resources, including articles book and python libs, I came across that may be useful for the project in [notes.md](https://github.com/DarienNouri/Trading-Strategy-Prjoect/blob/c6327f94ccef0929b11cef79f4a6d02e51100c98/resources/Notes.md)
-
-
-Utils overview:
-
-## TradingLib [Utils](https://github.com/DarienNouri/Trading-Strategy-Prjoect/tree/c6327f94ccef0929b11cef79f4a6d02e51100c98/utils) Module directory
 
 - [utils.data_downloader](https://github.com/DarienNouri/Trading-Strategy-Prjoect/blob/c6327f94ccef0929b11cef79f4a6d02e51100c98/utils/data_downloader.py)
   - DataUtils
@@ -91,3 +65,45 @@ Utils overview:
   - plot_ratio
   - plot_scaled_ratio_and_spread
   - plot_zscore_ratio
+
+### Models
+
+
+
+### Bactestings
+
+
+### Results & Evaluate
+
+```python
+selected_stock_basket = [
+    'GE',
+    'HON',
+    'DE',
+    'UNP',
+    'FDX',
+    'JPM',
+    'BAC',
+    'WFC',
+    'C',
+    'GS',
+    'MS',
+    'AXP',
+    'BLK',
+    'AAPL',
+    'GOOGL',
+    'INTC',
+    'CRM'
+ ]
+```
+
+
+
+
+<br/>
+<br/>
+
+
+
+
+***See more [file](https://github.com/DarienNouri/Trading-Strategy-Prjoect/blob/77504032eafc3947fea0f0414bb1bed2926ee10d/resources/Notes.md) for notes and links to articles/code resources**
