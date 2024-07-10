@@ -1,4 +1,4 @@
-# Assessing the Impact of DL Model Architecture Complexity on Pairs Trading Optimization
+# Assessing the Impact of ML Model Architecture Complexity on Pairs Trading Optimization
 
 <div align="center">
 <h3>Authors</h3>
@@ -80,8 +80,8 @@ We developed our feature set with the goal of capturing bespoke patterns and inf
 
 The 280 features can be categorized as follows:
 
-1. [Historical Pricing data](technical_indicators/save_price_hist_indicators_tofile.ipynb) (e.g., price, volume, volatility)
-2. [Derived Technical-Indicators](technical_indicators/src/technical_indicators.py) (e.g., moving averages, oscillators, volatility measures) 
+1. [Historical Pricing data](miscellaneous/data_preprocessing/save_price_hist_indicators_tofile.ipynb) (e.g., price, volume, volatility)
+2. [Derived Technical-Indicators](data_utils/technical_indicators.py) (e.g., moving averages, oscillators, volatility measures) 
 3. [Stock sentiment indicators](sentiment_analysis/NexiSentiment.ipynb)
 4. Spread-derived pricing and sentiment features between pairs
 
@@ -94,11 +94,13 @@ The 280 features can be categorized as follows:
 
 > *Pretty cool to note how one of the sentiment features, particularly the 60-day moving average of positive news mentions, contributed the most to the model.*
 
-- Code: [Feature set construction](technical_indicators/join_technicals_with_sentiments.ipynb)
 
+- Relevant Code: 
+  - [Feature set construction](miscellaneous/data_preprocessing/join_technicals_with_sentiments.ipynb)
+  - [technical_indicators.py](data_utils/technical_indicators.py)
+  - [analysis_setup.ipynb](models/supporting/analysis_setup.ipynb)
 
 ## Model Training and Evaluation
-
 
 
 Relevant code: [analysis_lstm_hypertuned_all_forecasts.ipynb](models/analysis_lstm_hypertuned_all_forecasts.ipynb).
@@ -155,10 +157,12 @@ Key observations:
 
 1. **Metric Discrepancy**: Simpler models performed better in terms of MSE. This could be due to the non-stationarity between our training data (2021-2022, moderate market performance) and test set (2023-2024, significant bull run with 30% S&P gains).
 2. **Non-Stationarity Handling**: To address this issue during backtesting, we incorporated a Bayesian approach to adjust the predicted z-score spread distribution daily based on priors. This allowed models to adapt to shifts in the spread distribution, providing more accurate predictions in the non-stationary environment. However, this is just one approach, a pre-processing method may be more effective.
-3. **Complexity vs. Performance**: Despite lower MSE scores, more complex models like LSTM and BiLSTM showed better performance in the backtesting phase, suggesting they captured nuanced patterns beneficial for trading decisions. This indicates how training performance directly indicate better performance in the trading strategy since signals are generated based on directional deviations rather than consistent, prolonged error. 
-   1. It may be benefical to implement custom optimization or loss function tailored to the trading objective could further improve performance.
-4. **Limitations**: Due to sentiment data constraints, models were only tested on the 2023-2024 bull market. Performance may not generalize well to other market conditions.
-5. **MAE and Trading Strategy Performance**: It's important to note that better training performance (lower errors) do not directly indicate better performance in the trading strategy. Our strategy generates signals based on directional deviations rather than consistent, prolonged error. In addition to non-stationarity bias, model with higher MAE might still outperform in trading if it accurately predicts significant directional changes in the spread, even if it's less accurate in predicting the exact magnitude of the spread.
+3. **Complexity vs. Performance**: Despite lower MSE scores, more complex models like LSTM and BiLSTM showed better performance in the backtesting phase, suggesting they captured nuanced patterns beneficial for trading decisions. 
+   - It may be benefical to implement custom optimization or loss function tailored to the trading objective could further improve performance in future works.
+
+
+>**Note:** Traditional evaluation metrics like MSE may not accurately reflect a model's trading performance, as signals are generated based on directional changes rather than prolonged, consistent errors.
+
 
 ![Evaluation Metrics of Various Models Forecasting Spread](figures/evaluation_metrics_across_models.png)
 
@@ -223,22 +227,44 @@ The table below summarizes the backtesting results for the various models across
 <br>
 
 <hr>
-<br>
+
 
 
 ### Directory Structure
 
-- [`backtesting/`](./backtesting/): Contains scripts for backtesting the trained models.
-- [`data/`](./data/): Contains various datasets used in the project.
-- [`docs/`](./docs/): Contains project documentation and supporting publications.
-- [`figures/`](./figures/): Contains visualizations and graphs used in the project.
-- [`miscellaneous/`](./miscellaneous/): Contains utility scripts and notebooks.
-- [`models/`](./models/): Contains notebooks for training and evaluating various deep learning models.
-- [`sentiment_analysis/`](./sentiment_analysis/): Contains scripts and data related to sentiment analysis as well as news scraping.
-- [`technical_indicators/`](./technical_indicators/): Contains scripts for collecting and updating market data and derived technical indicators.
+Key Notebooks:
+- [`LSTM Tuning and Batch Runner`](models/analysis_lstm_hypertuned_all_forecasts.ipynb): Notebook for hyperparameter tuning of LSTM models and evaluating performance across all pairs.
+- [`Backtester`](backtesting/backtester.ipynb): Implementation of backtesting strategy.
+- [`Feature Construction`](miscellaneous/data_preprocessing/join_technicals_with_sentiments.ipynb): Feature set construction/dataset merging.
+- [`Price Data Processing`](miscellaneous/data_preprocessing/save_price_hist_indicators_tofile.ipynb): Historical pricing data processing.
+- [`Sentiment Analysis`](sentiment_analysis/NexiSentiment.ipynb): Bert transformer based sentiment analysis processing.
+- [`News Headline Scraper`](sentiment_analysis/async_news_scraper.py): Asynchronous news headline scraper from Nexis Database.
 
+Project Structure:
+```
+.
+├── backtesting                          # Scripts for backtesting trained models
+├── data                                 # Various datasets used in the project
+│   ├── nexis_news_data_cleaned          # Cleaned news data from Nexis
+│   ├── price_history                    # Historical price data for stocks
+│   ├── sentiments                       # Sentiment data for stocks
+│   └── technical_indicators             # Technical indicators for stocks
+├── data_utils                           # Utility library for Refinitiv data
+├── docs                                 # Supporting publications
+├── figures                              # Visualizations and graphs
+├── miscellaneous                        # Utility scripts and preprocessing tools
+├── models                               # Training and evaluation notebooks
+│   ├── archive                          # Archived model files
+│   ├── logs                             # Model training logs
+│   └── supporting                       # Supporting scripts and notebooks
+└── sentiment_analysis                   # Sentiment analysis and news scraping
 
-**Note:** The files and data in this project were created and collected as part of an academic research project and should not be downloaded or used for commercial purposes. This includes any Bloomberg or Refinitiv data that may be present in the project.
+```
+<br>
+
+> **Note:** This project is for academic research. Do not use for commercial purposes, including Bloomberg or Refinitiv data.
+
+<hr>
 
 ### References
 
