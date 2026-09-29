@@ -1,31 +1,11 @@
 # Assessing the Impact of ML Model Architecture Complexity on Pairs Trading Optimization
 
-<div align="center">
-<h3>Authors</h3>
-<table>
-  <tr>
-    <td>Darien Nouri</td>
-    <td><a href="mailto:dan9232@nyu.edu">dan9232@nyu.edu</a></td>
-  </tr>
-  <tr>
-    <td>Charles Wang</td>
-    <td><a href="mailto:mw4899@nyu.edu">mw4899@nyu.edu</a></td>
-  </tr>
-  <tr>
-    <td>Yihao Zhong</td>
-    <td><a href="mailto:yz7654@nyu.edu">yz7654@nyu.edu</a></td>
-  </tr>
-</table>
-</div>
+Darien Nouri, Charles Wang and Yihao Zhong. New York University, 2024.
 
 
 ## Introduction
 
 This project investigates the relationship between machine learning model complexity and the effectiveness of pairs trading strategies. Pairs trading is a mean-reversion strategy that seeks to profit from the relative price movements of two correlated securities. The core idea is to identify pairs of securities that historically move together, then take long and short positions when their prices diverge, anticipating a return to their historical relationship. We explore how increasing model sophistication affects performance in predicting the spread between stock pairs.
-
-To put simply, this study aims to see if all this extra complexity actually pays off when it comes to predicting stock movements and making trading decisions. We're trying to find that sweet spot between a model that's smart enough to catch subtle patterns, but not so complicated that it starts seeing patterns that aren't really there. 
-
-Additionally, we aim to shed light on the potential trade-offs, both benefits and drawbacks, that might be associated with higher or lower model complexity in the context of financial forecasting.
 
 <p style="font-size:14px">
 <b>Note:</b> <i>Actually implementing a viable pairs trading strategy is not the main focus of this project. The main focus is to evaluate performance as a function of varying model complexity in forecasting the spread between two stocks. The pairs trading strategy is just a simple example of how the forecasted spread can be used in practice. The models are research artifacts and are not intended for live trading.</i>
@@ -40,7 +20,7 @@ Our approach involves:
 
 1. **Stock Pair Selection**: We developed a systematic approach to identify stock pairs from the S&P universe based on correlation and cointegration criteria.
 2. **Data Collection and Preprocessing**: We gathered extensive data from various sources, including technical indicators and sentiment data from Refinitiv, financial news headlines, and Twitter.
-3. **Feature Engineering**: Derived a 280 feature set for each stock and their spread, incorporating technical indicators as well as sentiment analysis to capture potential market shifts not yet reflected in price data.
+3. **Feature Engineering**: Derived 274 to 280 features per pair from both stocks and their spread, incorporating technical indicators as well as sentiment analysis to capture potential market shifts not yet reflected in price data.
 4. **Model Development**: Implemented and compared various models in forecasting spread, including:
 
    - Traditional regression models (Linear Regression, Gradient Boosting, Random Forest, LightGBM)
@@ -48,17 +28,16 @@ Our approach involves:
 5. **Hyperparameter Tuning**: Implementation of Keras Tuner to optimize model architectures and hyperparameters.
 6. **Model Evaluation**: Models were trained and evaluated using standard metrics such as MSE, MAE, and R2.
 7. **Backtesting**: Implemented a simple mean reversion strategy to backtest the models' performance in a simulated trading environment.
-8. **Performance Analysis**: Compared model performance across various metrics, including annualized returns, Sharpe ratio, and max drawdown.
 
 
 
 ## Stock Pair Selection
 
-We developed a systematic approach to identify stock pairs from the S&P, focusing on statistical relationships rather than potential profitability. This method ensured consistency across all models and experiments while controlling for selection bias.
-Our selection criteria balanced long-term equilibrium with enough price divergence to trade on:
+We developed a systematic approach to identify stock pairs from the S&P, focusing on statistical relationships rather than potential profitability. Every model was run on the same set of pairs.
+Pairs were ranked on two criteria:
 
 - Cointegration: Minimized p-value to indicate stronger long-term equilibrium.
-- Correlation: Maximized up to 0.8 threshold, ensuring similar movement but allowing trading opportunities.
+- Correlation: ranked from highest to lowest. The final rank (agg_rank) sorts pairs by the sum of the two ranks.
 
 We chose the S&P universe to ensure stocks likely to have meaningful news coverage. The top 10 ranked pairs based on our criteria are:
 
@@ -70,13 +49,15 @@ We chose the S&P universe to ensure stocks likely to have meaningful news covera
 | 9        | HON      | C        | 0.7518 | 0.2875       |
 | 10       | C        | BLK      | 0.7826 | 0.3438       |
 
+Not every listed pair is cointegrated at the 5% level (ranks 9 and 10 have p = 0.2875 and 0.3438). The ranking used prices from 2021-01-01 to 2024-03-01, which overlaps the models' test periods.
+
 
 
 ### Feature Engineering and Importance
 
 We developed our feature set with the goal of capturing bespoke patterns and influences that could potentially influence the spread between the stock pairs.
 
-The 280 features can be categorized as follows:
+Each pair has 274 to 280 features, in these groups:
 
 1. [Historical Pricing data](miscellaneous/data_preprocessing/save_price_hist_indicators_tofile.ipynb) (e.g., price, volume, volatility)
 2. [Derived Technical-Indicators](data_utils/technical_indicators.py) (e.g., moving averages, oscillators, volatility measures) 
@@ -90,7 +71,7 @@ The 280 features can be categorized as follows:
 
 ![Feature Importance Visualization](figures/feature_importances_ranked_drk.png)
 
-> *Pretty cool to note how one of the sentiment features, particularly the 60-day moving average of positive news mentions, contributed the most to the model.*
+The top-ranked feature is `news_pos_sentiment_count_S1_ma80`, an 80-day moving average of positive news mentions for the first stock in the pair, at about twice the importance of the next feature.
 
 
 - Relevant Code: 
@@ -128,9 +109,9 @@ Used [KerasTuner with RandomSearch](https://www.tensorflow.org/tutorials/keras/k
 - Dense layers (1-2)
 - Learning rate [1e-2, 1e-3, 1e-4]
 
-The tuning process ran for 100 trials, with early stopping after 4 epochs without improvement to prevent overshoot.
+The tuning process ran for 100 trials, with early stopping after 4 epochs without improvement to limit overfitting.
 
-![HyperBand Visualization of Hyperparameter Tuning](figures/lstm_hyperband_tuning.png)
+![Hyperparameter tuning trials](figures/lstm_hyperband_tuning.png)
 
 ### Model Complexity
 
@@ -148,21 +129,18 @@ This approach allowed us to investigate the relationship between model complexit
 
 ### Model Performance
 
-We evaluated various models in forecasting the spread between the selected stock pairs. The table below summarizes their performance:
+Test-set forecast error for one pair, GOOGL/BLK, the last pair processed in [backtester.ipynb](backtesting/backtester.ipynb). The tree models were scored from 2022-05-17 and the LSTMs from 2022-08-23, both through 2023-12-26.
 
+| Model                     |      R2 |    MAE |    MSE |   RMSE |
+| ------------------------- | ------: | -----: | -----: | -----: |
+| GradientBoostingRegressor |  0.6582 | 0.5729 | 0.5203 | 0.7213 |
+| RandomForestRegressor     |  0.6885 | 0.5479 | 0.4743 | 0.6887 |
+| LGBMRegressor             |  0.6634 | 0.5547 | 0.5124 | 0.7158 |
+| Vanilla LSTM              | -0.1247 | 1.1471 | 1.7872 | 1.3369 |
+| LSTM                      |  0.4565 | 0.8177 | 0.8636 | 0.9293 |
+| BiLSTM with Dropout       |  0.4087 | 0.8358 | 0.9396 | 0.9694 |
 
-Key observations:
-
-1. **Metric Discrepancy**: Simpler models performed better in terms of MSE. This could be due to the non-stationarity between our training data (2021-2022, moderate market performance) and test set (2023-2024, significant bull run with 30% S&P gains).
-2. **Non-Stationarity Handling**: To address this issue during backtesting, we incorporated a Bayesian approach to adjust the predicted z-score spread distribution daily based on priors. This allowed models to adapt to shifts in the spread distribution, providing more accurate predictions in the non-stationary environment. However, this is just one approach, a pre-processing method may be more effective.
-3. **Complexity vs. Performance**: Despite lower MSE scores, more complex models like LSTM and BiLSTM showed better performance in the backtesting phase, suggesting they captured nuanced patterns beneficial for trading decisions. 
-   - It may be benefical to implement custom optimization or loss function tailored to the trading objective could further improve performance in future works.
-
-
->**Note:** Traditional evaluation metrics like MSE may not accurately reflect a model's trading performance, as signals are generated based on directional changes rather than prolonged, consistent errors.
-
-
-![Evaluation Metrics of Various Models Forecasting Spread](figures/evaluation_metrics_across_models.png)
+Linear regression is not shown: its forecast diverged on this pair (test R2 about -2e21). Forecasts and metrics for all 18 pairs are saved in [model_predictions_all_pairs.pkl](data/model_results/model_predictions_all_pairs.pkl).
 
 ## Backtesting
 
@@ -171,31 +149,15 @@ Key observations:
 For backtesting the trained models, we implemented a simple mean reversion strategy here [backtester.ipynb](backtesting/backtester.ipynb).
 
 1. **Calculate Trading Signals**: The trading signals (long or short) are based on the predicted z-scored spread, previously calculated [here](models/analysis_lstm_hypertuned_all_forecasts.ipynb), and a predefined threshold. If the predicted z-scored spread was below the threshold, we generated a long signal, and if it was above, we generated a short signal.
-2. **Backtest Strategy Execution**: We implemented a mean reversion strategy based on the generated trading signals. The strategy involved taking long or short positions in the stock pairs when the predicted spread deviated from its historical relationship (as determined by the z-scored spread threshold). The strategy was executed using a BayesianRidge model to dynamically update the hedge ratio between the two stocks in the pair. 
-3. **Aggregate Results**: To facilitate greater statistical confidence, we aggregated the backtesting results across all stock pairs grouped by model.
+2. **Backtest Strategy Execution**: We implemented a mean reversion strategy based on the generated trading signals. The strategy involved taking long or short positions in the stock pairs when the predicted spread deviated from its historical relationship (as determined by the z-scored spread threshold). The hedge ratio between the two stocks is re-estimated each day with a BayesianRidge regression on earlier prices only, and the z-score signal threshold is fixed.
+3. **Per-pair runs**: Each of the 18 pairs was backtested separately.
 
-The backtesting process was performed with an initial capital of $\$100,000$ and a 1% transaction cost on each trade.
+[`backtester.ipynb`](backtesting/backtester.ipynb) contains the course backtest. It has known implementation issues (transaction costs were not applied and P&L is computed from position value rather than price changes), so its figures are not reported here.
 
-### Results
+## Analysis and Insights
 
-The table below summarizes the backtesting results for the various models across the selected stock pairs:
-
-| Model                     | Trading days | Final Portfolio Value | Annualized Returns | Sharpe Ratio | Sortino Ratio | Max Drawdown | Average Return | Standard Deviation |   CAGR |      R2 |    MAE |    MSE |   RMSE |
-| ------------------------- | ------------ | --------------------: | -----------------: | -----------: | ------------: | -----------: | -------------: | -----------------: | -----: | ------: | -----: | -----: | -----: |
-| GradientBoostingRegressor | 587          |           $180,549.02 |             44.40% |       2.6620 |        3.8357 |      -34.95% |          0.15% |              1.10% | 44.33% |  0.6582 | 0.5729 | 0.5203 | 0.7213 |
-| RandomForestRegressor     | 587          |           $150,277.44 |             28.82% |       1.8627 |        2.5793 |      -40.26% |          0.11% |              1.10% | 28.75% |  0.6885 | 0.5479 | 0.4743 | 0.6887 |
-| LGBMRegressor             | 587          |           $153,462.12 |             30.51% |       1.8692 |        2.6689 |      -40.01% |          0.11% |              1.15% | 30.45% |  0.6634 | 0.5547 | 0.5124 | 0.7158 |
-| Vanilla LSTM              | 489          |           $118,982.87 |             13.85% |       0.6610 |        0.4621 |      -81.16% |          0.08% |              2.22% | 13.85% | -0.1247 | 1.1471 | 1.7872 | 1.3369 |
-| LSTM                      | 489          |           $221,007.24 |             80.75% |       4.1318 |        7.4471 |      -20.96% |          0.24% |              1.12% | 80.72% |  0.4565 | 0.8177 | 0.8636 | 0.9293 |
-| BiLSTM with Dropout       | 489          |           $203,613.07 |             70.02% |       3.3429 |        4.3380 |      -24.15% |          0.22% |              1.25% | 69.99% |  0.4087 | 0.8358 | 0.9396 | 0.9694 |
-
-**Caveat:** the test period (2023-2024) was a significant bull run, and the tree models were backtested over 587 trading days while the LSTMs used 489, so returns are not directly comparable across the two groups.
-
-### Analysis and Insights
-
-1. **Model Complexity and Performance**: Overall we can see a clear trend with performance as a function of model complexity. The more complex models, such as LSTM and BiLSTM with Dropout, generally outperformed the simpler models (e.g., RandomForestRegressor, GradientBoostingRegressor) in terms of higher returns and better risk-adjusted performance. This suggests that the increased model complexity was able to capture bespoke relationships and patterns in the data more effectively.
-2. **Feature Engineering**: The incorporation of our complex feature set, particularly the sentiment features, contributed significantly to the model's performance. For the most part, these features are non-linear and complex, such that many of them provide little to no information to simpler models. However, LSTMs, with their recurrent structure and gating mechanisms, can effectively leverage complex and non-linear features like sentiment by accounting for rare or bespoke combinations of activations (e.g., a rare combination of positive news mentions from three days ago and high trading volume).
-3. **Benchmark Comparison**: When compared to SPX over the same period, three out of the five trained models (GBR, LSTM, and BiLSTM with Dropout) outperformed the market in terms of annualized returns.
+1. **Forecast error vs. complexity**: On GOOGL/BLK all three tree models had lower test MSE than all three LSTMs. Across the 18 pairs the pattern was not consistent: the best tree model had lower test MSE than the best LSTM on 8 of the 18 pairs.
+2. **Sentiment features**: A sentiment feature ranked first in feature importance (see above). No ablation was run, so how much the sentiment features helped each model is untested.
 
 <hr>
 
@@ -238,7 +200,7 @@ Key Notebooks:
 - [`Feature Construction`](miscellaneous/data_preprocessing/join_technicals_with_sentiments.ipynb): Feature set construction/dataset merging.
 - [`Price Data Processing`](miscellaneous/data_preprocessing/save_price_hist_indicators_tofile.ipynb): Historical pricing data processing.
 - [`Sentiment Analysis`](sentiment_analysis/NexiSentiment.ipynb): Bert transformer based sentiment analysis processing.
-- [`News Headline Scraper`](sentiment_analysis/async_news_scraper.py): Asynchronous news headline scraper from Nexis Database.
+- [`News Headline Collection`](sentiment_analysis/async_news_scraper.py): Headline collection from Nexis Uni through NYU library access (session supplied by the user).
 
 Project Structure:
 ```
@@ -262,7 +224,7 @@ Project Structure:
 ```
 <br>
 
-> **Note:** This project is for academic research. Do not use for commercial purposes, including Bloomberg or Refinitiv data.
+> **Note:** Academic course project. Refinitiv and Nexis data were accessed through NYU's licenses and are for academic use only.
 
 <hr>
 
@@ -276,12 +238,10 @@ Project Structure:
 
 [4]: [Rostamian, A., &amp; O’Hara, J. G. (2022). Event prediction within directional change framework using a CNN-LSTM model. Neural Computing and Applications, 34, 17193-17205. Springer](docs/supporting_publications/Hybrid_Approaches_for_Stock_Price_Prediction.pdf) · [doi:10.1007/s00521-022-07687-3](https://doi.org/10.1007/s00521-022-07687-3)
 
-[5]: [Yan, X., Qian, J. H., Ma, J., Zhang, A., &amp; others. (2023). Reconfigurable mixed-kernel heterojunction transistors for personalized support vector machine classification. Nature Electronics, 6(11), 862-869. Nature Publishing Group](docs/supporting_publications/Reconfigurable_Heterojunction_Transistors_for_SVM_Classification.pdf) · [doi:10.1038/s41928-023-01042-7](https://doi.org/10.1038/s41928-023-01042-7)
+[5]: [Shah, J., Vaidya, D., &amp; Shah, M. (2022). A comprehensive review on multiple hybrid deep learning approaches for stock prediction. Intelligent Systems with Applications, 16, 200111. Elsevier](docs/supporting_publications/Financial_Prediction_Using_Machine_Learning.pdf) · [doi:10.1016/j.iswa.2022.200111](https://doi.org/10.1016/j.iswa.2022.200111)
 
-[6]: [Shah, J., Vaidya, D., &amp; Shah, M. (2022). A comprehensive review on multiple hybrid deep learning approaches for stock prediction. Intelligent Systems with Applications, 16, 200111. Elsevier](docs/supporting_publications/Financial_Prediction_Using_Machine_Learning.pdf) · [doi:10.1016/j.iswa.2022.200111](https://doi.org/10.1016/j.iswa.2022.200111)
+[6]: Xu, Z., &amp; Luo, C. (2023). Improved pairs trading strategy using two-level reinforcement learning framework. Engineering Applications of Artificial Intelligence, 126, 107148. Elsevier · [doi:10.1016/j.engappai.2023.107148](https://doi.org/10.1016/j.engappai.2023.107148)
 
-[7]: [Xu, Z., &amp; Luo, C. (2023). Improved pairs trading strategy using two-level reinforcement learning framework. Engineering Applications of Artificial Intelligence, 126, 107148. Elsevier](docs/supporting_publications/Adaptive_Learning_in_Algorithmic_Trading.pdf) · [doi:10.1016/j.engappai.2023.107148](https://doi.org/10.1016/j.engappai.2023.107148)
+[7]: Shin, H.-G., Ra, I., &amp; Choi, Y.-H. (2019). A deep multimodal reinforcement learning system combined with CNN and LSTM for stock trading. In 2019 International Conference on Information and Communication Technology Convergence (ICTC) (pp. 7-11). IEEE · [doi:10.1109/ICTC46691.2019.8939991](https://doi.org/10.1109/ICTC46691.2019.8939991)
 
-[8]: [Shin, H.-G., Ra, I., &amp; Choi, Y.-H. (2019). A deep multimodal reinforcement learning system combined with CNN and LSTM for stock trading. In 2019 International Conference on Information and Communication Technology Convergence (ICTC) (pp. 7-11). IEEE](docs/supporting_publications/Multimodal_Reinforcement_Learning_Stock_Trading.pdf) · [doi:10.1109/ICTC46691.2019.8939991](https://doi.org/10.1109/ICTC46691.2019.8939991)
-
-[9]: [Shah, D., Campbell, W., &amp; Zulkernine, F. H. (2018). A comparative study of LSTM and DNN for stock market forecasting. In 2018 IEEE International Conference on Big Data (Big Data) (pp. 4148-4155). IEEE](docs/supporting_publications/Comparative_Study_LSTM_DNN_Stock_Forecasting.pdf) · [doi:10.1109/BigData.2018.8622462](https://doi.org/10.1109/BigData.2018.8622462)
+[8]: Shah, D., Campbell, W., &amp; Zulkernine, F. H. (2018). A comparative study of LSTM and DNN for stock market forecasting. In 2018 IEEE International Conference on Big Data (Big Data) (pp. 4148-4155). IEEE · [doi:10.1109/BigData.2018.8622462](https://doi.org/10.1109/BigData.2018.8622462)
