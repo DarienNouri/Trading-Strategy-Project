@@ -28,9 +28,7 @@ To put simply, this study aims to see if all this extra complexity actually pays
 Additionally, we aim to shed light on the potential trade-offs, both benefits and drawbacks, that might be associated with higher or lower model complexity in the context of financial forecasting.
 
 <p style="font-size:14px">
-<b>Note:</b> <i>Actually implementing a viable pairs trading strategy is not the main focus of this project. The main focus is to evaluate performance as a function of varying model complexity in forecasting the spread between two stocks. The pairs trading strategy is just a simple example of how the forecasted spread can be used in practice. I hope no one tries to trade with the models in this project. That would be a bad idea. You will regret it. Build your own model. You have been warned.</i>
-<br>
-<i>If someone from bloomberg is reading this, all analyses with respect to bloomberg data were performed on NYU terminals/HPC instances and not on personal machines. *cough. cough*</i>
+<b>Note:</b> <i>Actually implementing a viable pairs trading strategy is not the main focus of this project. The main focus is to evaluate performance as a function of varying model complexity in forecasting the spread between two stocks. The pairs trading strategy is just a simple example of how the forecasted spread can be used in practice. The models are research artifacts and are not intended for live trading.</i>
 </p>
 
 
@@ -190,6 +188,8 @@ The table below summarizes the backtesting results for the various models across
 | Vanilla LSTM              | 489          |           $118,982.87 |             13.85% |       0.6610 |        0.4621 |      -81.16% |          0.08% |              2.22% | 13.85% | -0.1247 | 1.1471 | 1.7872 | 1.3369 |
 | LSTM                      | 489          |           $221,007.24 |             80.75% |       4.1318 |        7.4471 |      -20.96% |          0.24% |              1.12% | 80.72% |  0.4565 | 0.8177 | 0.8636 | 0.9293 |
 | BiLSTM with Dropout       | 489          |           $203,613.07 |             70.02% |       3.3429 |        4.3380 |      -24.15% |          0.22% |              1.25% | 69.99% |  0.4087 | 0.8358 | 0.9396 | 0.9694 |
+
+**Caveat:** the test period (2023-2024) was a significant bull run, and the tree models were backtested over 587 trading days while the LSTMs used 489, so returns are not directly comparable across the two groups.
 
 ### Analysis and Insights
 
