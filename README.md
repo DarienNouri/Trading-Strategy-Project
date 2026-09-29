@@ -115,7 +115,7 @@ The tuning process ran for 100 trials, with early stopping after 4 epochs withou
 
 ### Model Complexity
 
-The Vanilla LSTM had 49,251 parameters, while the tuned LSTM model reached up to 2,062,205 parameters.
+The Vanilla LSTM had 49,251 trainable parameters, while the tuned LSTM had 687,401 (the architecture figure below also counts optimizer state, which brings the tuned model's total to 2,062,205).
 
 ### Evaluation
 
@@ -148,7 +148,7 @@ Linear regression is not shown: its forecast diverged on this pair (test R2 abou
 
 For backtesting the trained models, we implemented a simple mean reversion strategy here [backtester.ipynb](backtesting/backtester.ipynb).
 
-1. **Calculate Trading Signals**: The trading signals (long or short) are based on the predicted z-scored spread, previously calculated [here](models/analysis_lstm_hypertuned_all_forecasts.ipynb), and a predefined threshold. If the predicted z-scored spread was below the threshold, we generated a long signal, and if it was above, we generated a short signal.
+1. **Calculate Trading Signals**: The trading signals (long or short) are based on the predicted z-scored spread, previously calculated [here](models/analysis_lstm_hypertuned_all_forecasts.ipynb), and a predefined threshold. With a threshold of 0.4, a predicted z-scored spread below -0.4 generated a long signal, above +0.4 a short signal, and anything in between left the position flat.
 2. **Backtest Strategy Execution**: We implemented a mean reversion strategy based on the generated trading signals. The strategy involved taking long or short positions in the stock pairs when the predicted spread deviated from its historical relationship (as determined by the z-scored spread threshold). The hedge ratio between the two stocks is re-estimated each day with a BayesianRidge regression on earlier prices only, and the z-score signal threshold is fixed.
 3. **Per-pair runs**: Each of the 18 pairs was backtested separately.
 
