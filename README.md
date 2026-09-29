@@ -268,20 +268,20 @@ Project Structure:
 
 ### References
 
-[1]: [Nouri, D., Wang, C., &amp; Zhong, Y. (2024). *ML Model Complexity and U.S. Securities Strategy*. New York University.](https://general-scratch.s3.amazonaws.com/ML_Model_Complexity_and_US_Securities_Strategy.pdf)
+[1]: [Nouri, D., Wang, C., &amp; Zhong, Y. (2024). *ML Model Complexity and U.S. Securities Strategy*. New York University.](docs/supporting_publications/ML_Model_Complexity_and_US_Securities_Strategy.pdf)
 
-[2]: [Staffini, A. (2022). Stock price forecasting using generative adversarial networks. Fuzzy AI Applications in Finance, 8, 837596. Frontiers](https://general-scratch.s3.amazonaws.com/Fuzzy_AI_Applications_in_Finance.pdf)
+[2]: [Staffini, A. (2022). Stock price forecasting by a deep convolutional generative adversarial network. Frontiers in Artificial Intelligence, 5, 837596. Frontiers](docs/supporting_publications/Fuzzy_AI_Applications_in_Finance.pdf) · [doi:10.3389/frai.2022.837596](https://doi.org/10.3389/frai.2022.837596)
 
-[3]: [Otabek, S., &amp; Choi, J. (2024). Multi-level deep Q-networks for Bitcoin Trading Strategies. Scientific Reports, 14(1). DOI:10.1038/s41598-024-51408-w](https://general-scratch.s3.amazonaws.com/Innovative_Methods_in_Financial_Analysis.pdf)
+[3]: [Otabek, S., &amp; Choi, J. (2024). Multi-level deep Q-networks for Bitcoin trading strategies. Scientific Reports, 14(1), 771. Nature Portfolio](docs/supporting_publications/Innovative_Methods_in_Financial_Analysis.pdf) · [doi:10.1038/s41598-024-51408-w](https://doi.org/10.1038/s41598-024-51408-w)
 
-[4]: [Bakhach, A., Rostamian, A., &amp; O’Hara, J. G. (2022). CNN-LSTM Based Framework for Trading Signal Generation Using Tick Bars/Candlesticks. Neural Computing and Applications, 34, 17193--17205. Springer](https://general-scratch.s3.amazonaws.com/Hybrid_Approaches_for_Stock_Price_Prediction.pdf)
+[4]: [Rostamian, A., &amp; O’Hara, J. G. (2022). Event prediction within directional change framework using a CNN-LSTM model. Neural Computing and Applications, 34, 17193-17205. Springer](docs/supporting_publications/Hybrid_Approaches_for_Stock_Price_Prediction.pdf) · [doi:10.1007/s00521-022-07687-3](https://doi.org/10.1007/s00521-022-07687-3)
 
-[5]: [Yan, X., Qian, J. H., Ma, J., Zhang, A., Lennon, S. E., Bu, M.-P., Lin, K. J., Liu, X., Wang, H., Sangwan, V. K., &amp; others. (2023). Reconfigurable heterojunction transistors for in-sensor support vector machine classification. Nature Electronics, 6(10), 777--785. Nature Publishing Group](https://general-scratch.s3.amazonaws.com/Reconfigurable_Heterojunction_Transistors_for_SVM_Classification.pdf)
+[5]: [Yan, X., Qian, J. H., Ma, J., Zhang, A., &amp; others. (2023). Reconfigurable mixed-kernel heterojunction transistors for personalized support vector machine classification. Nature Electronics, 6(11), 862-869. Nature Publishing Group](docs/supporting_publications/Reconfigurable_Heterojunction_Transistors_for_SVM_Classification.pdf) · [doi:10.1038/s41928-023-01042-7](https://doi.org/10.1038/s41928-023-01042-7)
 
-[6]: [Shah, J., Vaidya, D., &amp; Shah, M. (2022). A comprehensive review on multiple hybrid deep learning approaches for stock prediction. Intelligent Systems with Applications, 16, 200111. Elsevier](https://general-scratch.s3.amazonaws.com/Financial_Prediction_Using_Machine_Learning.pdf)
+[6]: [Shah, J., Vaidya, D., &amp; Shah, M. (2022). A comprehensive review on multiple hybrid deep learning approaches for stock prediction. Intelligent Systems with Applications, 16, 200111. Elsevier](docs/supporting_publications/Financial_Prediction_Using_Machine_Learning.pdf) · [doi:10.1016/j.iswa.2022.200111](https://doi.org/10.1016/j.iswa.2022.200111)
 
-[7]: [Xu, Z., &amp; Luo, C. (2023). Adaptive learning for pairs trading with double deep Q-network and temporal difference learning. Engineering Applications of Artificial Intelligence, 126, 107148. Elsevier](https://general-scratch.s3.amazonaws.com/Adaptive_Learning_in_Algorithmic_Trading.pdf)
+[7]: [Xu, Z., &amp; Luo, C. (2023). Improved pairs trading strategy using two-level reinforcement learning framework. Engineering Applications of Artificial Intelligence, 126, 107148. Elsevier](docs/supporting_publications/Adaptive_Learning_in_Algorithmic_Trading.pdf) · [doi:10.1016/j.engappai.2023.107148](https://doi.org/10.1016/j.engappai.2023.107148)
 
-[8]: [Lee, S., &amp; So, W.-S. (2020). Multimodal reinforcement learning for stock trading using image and time series data. In 2020 International Conference on Information and Communication Technology Convergence (ICTC) (pp. 1575--1577). IEEE](https://general-scratch.s3.amazonaws.com/Multimodal_Reinforcement_Learning_Stock_Trading.pdf)
+[8]: [Shin, H.-G., Ra, I., &amp; Choi, Y.-H. (2019). A deep multimodal reinforcement learning system combined with CNN and LSTM for stock trading. In 2019 International Conference on Information and Communication Technology Convergence (ICTC) (pp. 7-11). IEEE](docs/supporting_publications/Multimodal_Reinforcement_Learning_Stock_Trading.pdf) · [doi:10.1109/ICTC46691.2019.8939991](https://doi.org/10.1109/ICTC46691.2019.8939991)
 
-[9]: [Kumar, H., Agarwal, P., &amp; Rani, M. (2020). Comparative Study of LSTM and DNN for Daily Stock Forecasting. In 2020 International Conference on Electronics and Sustainable Communication Systems (ICESC) (pp. 1080--1085). IEEE](https://general-scratch.s3.amazonaws.com/Comparative_Study_LSTM_DNN_Stock_Forecasting.pdf)
+[9]: [Shah, D., Campbell, W., &amp; Zulkernine, F. H. (2018). A comparative study of LSTM and DNN for stock market forecasting. In 2018 IEEE International Conference on Big Data (Big Data) (pp. 4148-4155). IEEE](docs/supporting_publications/Comparative_Study_LSTM_DNN_Stock_Forecasting.pdf) · [doi:10.1109/BigData.2018.8622462](https://doi.org/10.1109/BigData.2018.8622462)
